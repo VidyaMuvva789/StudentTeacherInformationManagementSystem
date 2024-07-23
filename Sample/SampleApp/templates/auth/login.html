@@ -1,0 +1,42 @@
+{% extends 'layouts/app.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center align-items-center" style="height: 80vh;"> <!-- Center the form vertically -->
+    <div class="col-sm-4 border rounded p-4"> <!-- Add border and padding -->
+        <h2 class="text-muted mb-4 position-relative">Login <span class="underline"></span></h2> <!-- Add line below h2 tag -->
+        {% if form.non_field_errors %}
+        <small class="text-danger">
+            {{form.non_field_errors.as_ul}}
+        </small>
+        {% endif %}
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ from.username.id_for_label }}">Username:</label>
+                <input type="text" name="{{ form.username.name }}" class="form-control" value="{{ form.username.value }}"/>
+                <span class="text-danger">{{ form.username.errors }}</span>
+            </div>
+            <div class="form-group">
+                <label for="{{ from.password.id_for_label }}">Password:</label>
+                <input type="password" name="{{ form.password.name }}" class="form-control" value="{{ form.password.value }}"/>
+                <span class="text-danger">{{ form.password.errors }}</span>
+            </div>
+            <button type="submit" class="btn btn-success">Login</button>
+            <a href="{% url 'register' %}" >Create new account</a>
+        </form>
+    </div>
+</div>
+
+<style>
+    .underline {
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #ccc;
+    }
+</style>
+
+{% endblock %}
