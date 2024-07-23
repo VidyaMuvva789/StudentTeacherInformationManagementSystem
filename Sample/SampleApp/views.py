@@ -16,7 +16,7 @@ def send_email(request):
             send_mail(
                 'Job alerts !!!',
                 'New internship offer for Data science roles click here to register ',
-                'muvvavidya@gmail.com',  # Sender's email address
+                'your gmail',  # Sender's email address
                 [email],  # Recipient's email address
                 fail_silently=False,
             )
