@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Profile</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ profile_form.as_p }}
+            <button type="submit" class="btn btn-primary">Save Profile</button>
+        </form>
+
+        {% if profile %}
+        <h3 class="mt-5">Profile Details</h3>
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <th>Full Name</th>
+                    <td>{{ profile.full_name }}</td>
+                </tr>
+                <tr>
+                    <th>Date of Birth</th>
+                    <td>{{ profile.dob }}</td>
+                </tr>
+                <tr>
+                    <th>Highest Degree</th>
+                    <td>{{ profile.highest_degree }}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% endif %}
+
+        <h2 class="mt-5">Work Experience</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Duration</th>
+                    <th>College Name</th>
+                    <th>Worked As</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for experience in work_experiences %}
+                <tr>
+                    <td>{{ experience.duration }}</td>
+                    <td>{{ experience.college_name }}</td>
+                    <td>{{ experience.worked_as }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <form method="post" action="{% url 'add_work_experience' %}">
+            {% csrf_token %}
+            {{ work_experience_form.as_p }}
+            <button type="submit" class="btn btn-primary">Add Work Experience</button>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
