@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 class TeacherProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=100)
-    dob = models.DateField()
+    email = models.EmailField(default='default@example.com')
+    phone_number = models.CharField(max_length=15, default='000-000-0000')
     highest_degree = models.CharField(max_length=100)
 
     def __str__(self):
