@@ -1,11 +1,10 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 # Create your views here.
 from django.core.mail import send_mail
-from .forms import EmailForm
-from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
-from .forms import TeacherProfileForm, WorkExperienceForm
+from .forms import TeacherRegistrationForm, TeacherProfileForm, WorkExperienceForm, EmailForm
 from .models import TeacherProfile, WorkExperience
 
 def send_email(request):
@@ -57,8 +56,25 @@ def teach_logout(request):
     logout(request)
     return redirect('login')
 
+
 @login_required
 def profile_view(request):
+    try:
+        profile = TeacherProfile.objects.get(user=request.user)
+    except TeacherProfile.DoesNotExist:
+        profile = None
+
+    work_experience_form = WorkExperienceForm()
+    work_experiences = WorkExperience.objects.filter(teacher=profile)
+
+    return render(request, 'profile.html', {
+        'profile': profile,
+        'work_experience_form': work_experience_form,
+        'work_experiences': work_experiences
+    })
+
+@login_required
+def edit_profile(request):
     try:
         profile = TeacherProfile.objects.get(user=request.user)
     except TeacherProfile.DoesNotExist:
@@ -67,21 +83,13 @@ def profile_view(request):
     if request.method == 'POST':
         profile_form = TeacherProfileForm(request.POST, instance=profile)
         if profile_form.is_valid():
-            teacher_profile = profile_form.save(commit=False)
-            teacher_profile.user = request.user
-            teacher_profile.save()
+            profile_form.save()
             return redirect('profile')
     else:
         profile_form = TeacherProfileForm(instance=profile)
 
-    work_experience_form = WorkExperienceForm()
-    work_experiences = WorkExperience.objects.filter(teacher=profile)
-
-    return render(request, 'profile.html', {
-        'profile_form': profile_form,
-        'work_experience_form': work_experience_form,
-        'profile': profile,
-        'work_experiences': work_experiences
+    return render(request, 'edit_profile.html', {
+        'profile_form': profile_form
     })
 
 @login_required
@@ -93,4 +101,34 @@ def add_work_experience(request):
             work_experience.teacher = TeacherProfile.objects.get(user=request.user)
             work_experience.save()
             return redirect('profile')
-    return redirect('profile')
+    else:
+        work_experience_form = WorkExperienceForm()
+
+    return render(request, 'add_work_experience.html', {
+        'work_experience_form': work_experience_form
+    })
+
+@login_required
+def edit_work_experience(request, id):
+    work_experience = get_object_or_404(WorkExperience, id=id)
+    if request.method == 'POST':
+        work_experience_form = WorkExperienceForm(request.POST, instance=work_experience)
+        if work_experience_form.is_valid():
+            work_experience_form.save()
+            return redirect('profile')
+    else:
+        work_experience_form = WorkExperienceForm(instance=work_experience)
+
+    return render(request, 'edit_work_experience.html', {
+        'work_experience_form': work_experience_form
+    })
+
+@login_required
+def delete_work_experience(request, id):
+    work_experience = get_object_or_404(WorkExperience, id=id)
+    if request.method == 'POST':
+        work_experience.delete()
+        return redirect('profile')
+    return render(request, 'delete_work_experience.html', {
+        'work_experience': work_experience
+    })
