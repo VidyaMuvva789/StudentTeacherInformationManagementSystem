@@ -16,13 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from SampleApp import views #or from . import views
-from SampleApp.views import send_email,profile_view, add_work_experience
+#from SampleApp import views 
+# #from . import views
+from SampleApp.views import send_email,profile_view, add_work_experience,edit_profile,edit_work_experience,delete_work_experience
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('send-email/', send_email, name='send_email'),
     path('profile/', profile_view, name='profile'),
-    path('add_work_experience/', add_work_experience, name='add_work_experience'),
-    path('auth/',include("SampleApp.urls")),
+    path('profile/edit/', edit_profile, name='edit_profile'),
+    path('profile/work_experience/add/', add_work_experience, name='add_work_experience'),
+    path('profile/work_experience/edit/<int:id>/', edit_work_experience, name='edit_work_experience'),
+    path('profile/work_experience/delete/<int:id>/', delete_work_experience, name='delete_work_experience'),
+    path('auth/', include("SampleApp.urls")),
 ]
