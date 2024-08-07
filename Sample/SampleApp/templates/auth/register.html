@@ -2,25 +2,45 @@
 
 {% block content %}
 
-<div class="row justify-content-center align-items-center"  style="height: 80vh;">
-    <div class="col-sm-5 border rounded p-4">
-        <h2 class="text-muted mb-4 position-relative">Register <span class="underline"></span></h2>
+<div class="row justify-content-center align-items-center" style="height: 80vh;"> <!-- Center the form vertically -->
+    <div class="col-sm-5 border rounded p-4"> <!-- Add border and padding -->
+        <h2 class="text-muted mb-4 position-relative">Register <span class="underline"></span></h2> <!-- Add line below h2 tag -->
         <form method="POST" action="{% url 'register' %}">
             {% csrf_token %}
             <div class="form-group">
                 <label for="{{ form.username.id_for_label }}">Username:</label>
-                <input type="text" name="{{ form.username.name }}" class="form-control" value="{{ form.username.value }}"/>
+                <input type="text" name="{{ form.username.name }}" class="form-control" id="{{ form.username.id_for_label }}" value="{{ form.username.value }}" />
                 <span class="text-danger">{{ form.username.errors }}</span>
             </div>
             <div class="form-group">
                 <label for="{{ form.password1.id_for_label }}">Password:</label>
-                <input type="password" name="{{ form.password1.name }}" class="form-control" value="{{ form.password1.value }}"/>
+                <input type="password" name="{{ form.password1.name }}" class="form-control" id="{{ form.password1.id_for_label }}" value="{{ form.password1.value }}" />
                 <span class="text-danger">{{ form.password1.errors }}</span>
             </div>
             <div class="form-group">
                 <label for="{{ form.password2.id_for_label }}">Confirm Password:</label>
-                <input type="password" name="{{ form.password2.name }}" class="form-control" value="{{ form.password2.value }}"/>
+                <input type="password" name="{{ form.password2.name }}" class="form-control" id="{{ form.password2.id_for_label }}" value="{{ form.password2.value }}" />
                 <span class="text-danger">{{ form.password2.errors }}</span>
+            </div>
+            <div class="form-group">
+                <label for="{{ form.full_name.id_for_label }}">Full Name:</label>
+                <input type="text" name="{{ form.full_name.name }}" class="form-control" id="{{ form.full_name.id_for_label }}" value="{{ form.full_name.value }}" />
+                <span class="text-danger">{{ form.full_name.errors }}</span>
+            </div>
+            <div class="form-group">
+                <label for="{{ form.email.id_for_label }}">Email:</label>
+                <input type="email" name="{{ form.email.name }}" class="form-control" id="{{ form.email.id_for_label }}" value="{{ form.email.value }}" />
+                <span class="text-danger">{{ form.email.errors }}</span>
+            </div>
+            <div class="form-group">
+                <label for="{{ form.phone_number.id_for_label }}">Phone Number:</label>
+                <input type="text" name="{{ form.phone_number.name }}" class="form-control" id="{{ form.phone_number.id_for_label }}" value="{{ form.phone_number.value }}" />
+                <span class="text-danger">{{ form.phone_number.errors }}</span>
+            </div>
+            <div class="form-group">
+                <label for="{{ form.highest_degree.id_for_label }}">Highest Degree:</label>
+                <input type="text" name="{{ form.highest_degree.name }}" class="form-control" id="{{ form.highest_degree.id_for_label }}" value="{{ form.highest_degree.value }}" />
+                <span class="text-danger">{{ form.highest_degree.errors }}</span>
             </div>
             <button type="submit" class="btn btn-success">Submit</button>
             <a href="{% url 'login' %}" class="btn btn-default">Login</a>
